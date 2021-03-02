@@ -11,6 +11,7 @@ import 'vant/lib/index.css';
 // import 'vant/lib/index.css';
 
 // Vue.use(Vant);
+import "lib-flexible/flexible"
 
 import '@/assets/iconfont/font_2394605_okeixit5bna/iconfont.css'
 Vue.config.productionTip = false

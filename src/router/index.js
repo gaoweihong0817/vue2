@@ -5,9 +5,19 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/',
+    path: '/Home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      keepAlive: true,
+      // 自定义路由的级别
+      level: 2
+    },
+
+  },
+  {
+    path: "/",
+    redirect: "/Home"
   },
   {
     path: '/about',
@@ -23,7 +33,12 @@ const routes = [{
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import( /* webpackChunkName: "about" */ '../views/edt.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/edt.vue'),
+    meta: {
+
+      // 自定义路由的级别
+      level: 12
+    }
   }
 ]
 

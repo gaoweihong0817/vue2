@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" id="demo">
     <!-- header头部 -->
     <section>
       <van-icon name="arrow-left" />
@@ -31,7 +31,7 @@
 
         <van-swipe-item>
           <ul class="ulList">
-            <li v-for="(item,key) in Img" :key="key.id" v-show="item.id ==='0009'">
+            <li v-for="(item,key) in Img" :key="key" v-show="item.id ==='0009'">
               <div>
                 <img :src="item.imgUrl" alt class="url" />
                 <p>{{item.desc}}</p>
@@ -44,6 +44,7 @@
     <!--  -->
     <nav>热销推荐</nav>
     <!-- <button @click="aaa">按钮</button> -->
+
     <dl v-for="(item,key) in dl" :key="key" class="Dl">
       <dt>
         <img :src="item.imgUrl" alt class="ImgDl" />
@@ -51,9 +52,12 @@
       <dd>
         <h6>{{item.title}}</h6>
         <p>{{item.desc}}</p>
-        <span @click="edt(item.id)">查看详情</span>
+      
+          <span @click="edt(item.id)">查看详情</span>
+      
       </dd>
     </dl>
+
     <nav>周末去哪儿</nav>
     <dl v-for="(item,key) in dlList" :key="key" class="DlTwo">
       <dt>
@@ -69,32 +73,49 @@
 
 <script>
 export default {
+  name: "home",
   data() {
     return {
       value: "",
       List: [],
       Img: [],
       dl: [],
-      dlList: []
+      dlList: [],
+      //动画
+      show: true
     };
   },
   methods: {
-    getList() {
-      this.$axios.get("/index.json").then(res => {
-        this.List = res.data.data.swiperList;
-        this.Img = res.data.data.iconList;
-        this.dl = res.data.data.recommendList;
-        this.dlList = res.data.data.weekendList;
-      });
+    async getList() {
+      let res = await this.$axios.get("/index.json");
+      // console.log(res);
+      this.List = res.data.data.swiperList;
+      this.Img = res.data.data.iconList;
+      this.dl = res.data.data.recommendList;
+      this.dlList = res.data.data.weekendList;
     },
     go() {
       this.$router.push("/About");
     },
     edt(id) {
-      console.log(id);
+      // console.log(id);
       this.$router.push(`/edt?id=${id}`);
     }
   },
+  activated() {
+    console.log("home 组件激活拉");
+     if(sessionStorage.getItem('scrollH')){
+        document.getElementById('demo').scrollTop=sessionStorage.getItem('scrollH')
+    }
+  },
+  deactivated() {
+    console.log("home 组件销毁拉");
+  },
+  beforeRouteLeave(to,from,next){  //离开页面之前将高度存储到sessionStorage。这里不建议用localStorage，因为session在关闭浏览器时会自动清除，而local则需要手动清除，有点麻烦。
+    sessionStorage.setItem('scrollH',document.getElementById('demo').scrollTop)
+    next()
+},
+
   mounted() {
     this.getList();
   }
@@ -103,6 +124,12 @@ export default {
 
 
 <style lang="scss" scoped>
+#demo{
+  width: 100%;
+  height: 500px;
+  border: 1px solid #000;
+  overflow: auto;
+}
 section {
   display: flex;
   justify-content: space-around;
@@ -233,4 +260,6 @@ nav {
   margin: -40px -136px;
   padding: 0px;
 }
+
+
 </style>

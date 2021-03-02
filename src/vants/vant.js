@@ -8,7 +8,8 @@ import {
   SwipeItem,
   Search,
   Icon,
-  NavBar
+  NavBar,
+  // ImagePreview
 } from 'vant';
 
 
@@ -18,3 +19,4 @@ Vue.use(SwipeItem);
 Vue.use(Search)
 Vue.use(Icon);
 Vue.use(NavBar)
+// Vue.use(ImagePreview)

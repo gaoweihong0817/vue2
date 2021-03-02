@@ -1,14 +1,14 @@
 <template>
-  <div class="xp">
-<p>
+  <div class="xp" >
+<p >
     <van-icon name="arrow-left" @click="left"/>
       <img :src="this.bannerImg" alt  @click="banner"/>
      <section>
        <nav>{{this.sightName}}</nav>
-     <span>图2</span>
+     <span>图{{this.num}}</span>
      </section>
     </p>
-    <dl v-for="(item,key) in categoryList" :key="key">
+    <dl v-for="(item,key) in categoryList" :key="key"> 
       <dt class="iconfont icon-weibiaoti--"></dt>
       <dd>
         {{item.title}}
@@ -24,18 +24,27 @@
         </dl>
       </dd>
     </dl>
+  
   </div>
+  
 </template>
 
 <script>
+import {ImagePreview} from 'vant';
   export default {
+
+name:"detail",
+
      data() {
     return {
       bannerImg: "",
       sightName: "",
       list: [],
       gallaryImgs: [],
-      categoryList: []
+      categoryList: [],
+      num:"",
+      //动画
+      // show:true
     };
   },
   methods: {
@@ -48,14 +57,15 @@
         this.sightName = res.data.data.sightName;
         this.list = res.data.data.categoryList;
         this.gallaryImgs = res.data.data.gallaryImgs;
+        this.num = res.data.data.gallaryImgs.length;
         this.categoryList = res.data.data.categoryList;
       });
     },
     banner() {
-      ImagePreview([this.gallaryImgs[0], this.gallaryImgs[1]]);
+      ImagePreview(this.gallaryImgs);
     },
     left() {
-      this.$router.push("/");
+      this.$router.go(-1);
     }
   },
   mounted() {
